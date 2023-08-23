@@ -18,6 +18,11 @@ class MovieRepositoryImpl( private val movieRemoteDataSource:MovieRemoteDataSour
 
     override suspend fun updateMovies(): List<Movie>? {
         val newListOfMovies = getMoviesFromAPI()
+        movieLocalDataSource.clearAll()
+        movieLocalDataSource.saveMoviesToDB(newListOfMovies)
+        movieCacheDataSource.saveMoviesToCache(newListOfMovies)
+        return newListOfMovies
+
     }
 
     suspend fun getMoviesFromAPI(): List<Movie> {
